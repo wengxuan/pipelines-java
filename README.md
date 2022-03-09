@@ -1,4 +1,4 @@
-
+[![Build Status](https://dev.azure.com/176128417/176128417/_apis/build/status/wengxuan.pipelines-java%20(3)?branchName=master)](https://dev.azure.com/176128417/176128417/_build/latest?definitionId=4&branchName=master)
 # Contributing
 
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
