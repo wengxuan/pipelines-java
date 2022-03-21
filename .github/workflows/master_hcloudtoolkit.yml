@@ -29,8 +29,8 @@ jobs:
         with:
           access_key: ${{ secrets.ACCESSKEY }}
           secret_key: ${{ secrets.SECRETACCESSKEY }}
-          region: 'region'
-          bucket_name: 'bucket-test'
+          region: cn-north-4
+          bucket_name: 'hdn-github-action'
           local_file_path: '${{ github.workspace }}/target/'
           obs_file_path: 'srcTest'
           operation_type: upload
