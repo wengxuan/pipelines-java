@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build_upload_obs:
     runs-on: ubuntu-latest
 
     steps:
@@ -22,32 +22,17 @@ jobs:
           java-version: '8'
 
       - name: Build with Maven
-        run: mvn clean install
+        run: mvn package -Dmaven.test.skip=true -U -e -X -B
 
-      - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v2
+      - name: Huawei OBS Helper
+        uses: huaweicloud/obs-helper@v1.0.0
         with:
-          name: java-app
-          path: '${{ github.workspace }}/target/*.jar'
+          access_key: ${{ secrets.ACCESSKEY }}
+          secret_key: ${{ secrets.SECRETACCESSKEY }}
+          region: 'region'
+          bucket_name: 'bucket-test'
+          local_file_path: '${{ github.workspace }}/target/'
+          obs_file_path: 'srcTest'
+          operation_type: upload
 
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    environment:
-      name: 'Production'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-    
-    steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v2
-        with:
-          name: java-app
 
-      - name: Deploy to Azure Web App
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: 'hcloudtoolkit'
-          slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_79BB7BFE7BC94654B69BEA16680DAFA8 }}
-          package: '*.jar'
